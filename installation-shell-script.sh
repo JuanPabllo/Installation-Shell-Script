@@ -9,14 +9,10 @@
 ## Applications that will be installed ##
 
 ## VLC ##
-## Chromium ##
 ## Node ##
 ## Yarn ##
-## JDK ##
 ## Docker ##
-## Docker Compose ##
 ## Vim ##
-## qBittorrent ##
 ## Gnome-tweaks ##
 
 ## To update and upgrade your system before continue ##
@@ -30,23 +26,9 @@ sudo apt update && sudo apt full-upgrade
 
 sudo apt install vlc
 
-## Chromium ##
-
-sudo add-apt-repository ppa:xalt7x/chromium-deb-vaapi
-
-cat <<EOF | sudo tee /etc/apt/preferences.d/pin-xalt7x-chromium-deb-vaapi
-Package: *
-Pin: release o=LP-PPA-xalt7x-chromium-deb-vaapi
-Pin-Priority: 1337
-EOF
-
-sudo apt-get update
-
-sudo apt install chromium-browser chromium-codecs-ffmpeg
-
 ## Node ##
 
-curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 
 sudo apt install -y nodejs
 
@@ -58,14 +40,6 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 
 sudo apt update && sudo apt-get install yarn
 
-## JDK ##
-
-sudo add-apt-repository ppa:openjdk-r/ppa
-
-sudo apt update
-
-sudo apt install openjdk-8-jdk
-
 ## Graphic libraries ##
 
 sudo apt-get install gcc-multilib lib32z1 lib32stdc++6
@@ -74,19 +48,13 @@ sudo apt-get install gcc-multilib lib32z1 lib32stdc++6
 
 sudo apt update
 
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-
-sudo apt update
-
-apt-cache policy docker-ce
-
-sudo apt install docker-ce
-
-sudo systemctl status docker
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ## The next commands will be just for only if you want to use Docker without sudo ##
 
@@ -96,29 +64,11 @@ su - ${USER}
 
 id -nG
 
-## Docker Compose ##
-
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-sudo chmod +x /usr/local/bin/docker-compose
-
-sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-
-sudo curl -L https://raw.githubusercontent.com/docker/compose/1.28.2/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
-
 ## Vim ##
 
 sudo apt update
 
 sudo apt install vim
-
-## qBittorrent ##
-
-sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable
-
-sudo apt update
-
-sudo apt install qbittorrent
 
 ## Gnome-tweaks ##
 
@@ -126,7 +76,7 @@ sudo apt install gnome-tweaks
 
 ## To end up ##
 
-sudo apt update && apt list --upgradable && sudo apt upgrade
+sudo apt update && sudo apt full-upgrade
 
 ## Linuxs based on debian versions less than 20.04 ##
 ## sudo apt-get update && sudo apt-get upgrade ##
